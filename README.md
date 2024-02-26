@@ -2,7 +2,7 @@
 # Online Course Website with Django Framework
 
 # Description:
-This project is an Online Course Website developed using the Django Framework, providing a platform for managing and delivering online courses. The website includes functionalities for both administrators and users, allowing administrators to manage courses, videos, fees, and user data, while users can sign up, log in, enroll in courses, and access course materials.
+This project is an Online Course Website developed using the Django Framework, providing a platform for managing and delivering online courses. The website includes functionalities for both administrators and users, allowing administrators to manage courses, videos, fees, and user data, while users can sign_up, log_in, enroll in courses, and access course materials.
 
 # Key Features:
 
@@ -23,7 +23,7 @@ SQLite or PostgreSQL (Database Management)
 
 # Installation:
 
-Clone the repository: **git clone https://github.com/suryawanshipratik003/online-course-website.git**
+Clone the repository: **gh repo clone suryawanshipratik003/Online_Course_Prj**
 Navigate to the project directory: **cd online-course-website**
 Install dependencies: **pip install -r requirements.txt**
 Run migrations: **python manage.py migrate**
