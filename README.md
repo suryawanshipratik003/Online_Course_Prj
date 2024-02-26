@@ -23,7 +23,7 @@ SQLite or PostgreSQL (Database Management)
 
 # Installation:
 
-Clone the repository: **git clone https://github.com/yourusername/online-course-website.git**
+Clone the repository: **git clone https://github.com/suryawanshipratik003/online-course-website.git**
 Navigate to the project directory: **cd online-course-website**
 Install dependencies: **pip install -r requirements.txt**
 Run migrations: **python manage.py migrate**
