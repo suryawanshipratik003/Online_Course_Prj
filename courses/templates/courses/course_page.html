@@ -1,0 +1,171 @@
+{% extends 'courses/base.html' %}
+{% load static %}
+{% load course_custom_tags %}
+
+{% block title %}
+Courses
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'courses/css/scrollbar.css' %}">
+<style>
+    /* Custom CSS for Course Page */
+    
+    /* General Styles */
+    body {
+        background-color: #f8f9fa; /* Set background color to a light gray */
+        color: #333; /* Set text color to dark gray for better readability */
+        padding-top: 20px; /* Add top padding to separate content from top */
+    }
+
+    .container-fluid {
+        padding: 20px;
+    }
+
+    /* Button Styles */
+    .btn {
+        margin-top: 10px; /* Add top margin to buttons for better spacing */
+    }
+
+    .btn.disabled {
+        cursor: not-allowed; /* Change cursor to not-allowed for disabled buttons */
+    }
+
+    /* Video Player Styles */
+    #player {
+        width: 100%;
+        height: 400px; /* Set fixed height for video player */
+    }
+
+    /* Lecture List Styles */
+    .list-group {
+        max-height: 400px; /* Set maximum height for lecture list with scrollbar */
+        overflow-y: auto; /* Add scrollbar for overflow */
+    }
+
+    .list-group-item {
+        cursor: pointer; /* Set cursor to pointer for better interactivity */
+    }
+
+    .list-group-item.active-video {
+        background-color: #007bff; /* Highlight active video item */
+        color: #fff; /* Set text color to white for better contrast */
+    }
+
+    /* Card Styles */
+    .card {
+        margin-bottom: 20px;
+        border: none; /* Remove default card border */
+        border-radius: 10px; /* Add border radius for smoother edges */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add box shadow for depth */
+    }
+
+    .card-title {
+        font-size: 1.25rem; /* Set card title font size */
+        font-weight: bold; /* Make card title bold for emphasis */
+        color: #333; /* Set card title color to dark gray */
+        margin-bottom: 0.75rem; /* Add bottom margin to separate title from content */
+    }
+
+    .card-text {
+        font-size: 1rem; /* Set card text font size */
+        color: #555; /* Set card text color to gray */
+        margin-bottom: 0.5rem; /* Add bottom margin to separate text from buttons */
+    }
+</style>
+{% endblock css %}
+
+{% block js %}
+<script src="{% static 'courses/js/course_page.js' %}"></script>
+{% endblock js %}
+
+{% block content %}
+<div class="container-fluid">
+    <br>
+    <div class="card p-3">
+        <div class="row">
+            <!-- youtube player -->
+            <div class="col">
+                <div class="mx-auto">
+                    <iframe id="player" width="100%" src="https://www.youtube.com/embed/{{ video.video_id }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <div id="previous">
+                        {% if prev_lecture %}
+                        <a class="btn btn-success" href="?lecture={{ prev_lecture }}"><--Previous</a>
+                        {% else %}
+                        <a class="btn btn-success disabled" href="javascript:void(0)"><--Previous</a>
+                        {% endif %}
+                    </div>
+
+                    <div id="next">
+                        {% if next_lecture %}
+                        <a class="btn btn-success" href="?lecture={{ next_lecture }}">Next--></a>
+                        {% else %}
+                        <a class="btn btn-success disabled" href="javascript:void(0)">Next--></a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lecture list-->
+            <div class="col-3">
+                <ul id="video_list" class="list-group overflow-y-scroll">
+                    {% is_enrolled request course as enrolled %}
+                    {% for v in videos %}
+                    <li class="list-group-item {% if v == video %} active-video {% endif %}">
+                        <a class="{% if not enrolled and not v.is_preview %} text-muted no-preview {% endif %} {% if v == video %} active-video-link {% endif %}" href="?lecture={{ v.serial_number }}">
+                            {{ v }}
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-3">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">{{ course.names }}</h5>
+                <p class="card-text">{{ course.description }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!--Prerequisite-->
+    <div class="mt-3">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Prerequisite</h5>
+                <p class="card-text">
+                    <ol>
+                        {% for pre in course.prerequisite_set.all %}
+                        <li>{{ pre.description }}</li>
+                        {% endfor %}
+                    </ol>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!--Learning end-->
+    <div class="mt-3">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Learning</h5>
+                <p class="card-text">
+                    <ol>
+                        {% for l in course.learning_set.all %}
+                        <li>{{ l.description }}</li>
+                        {% endfor %}
+                    </ol>
+                </p>
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+    <br>
+</div>
+{% endblock content %}

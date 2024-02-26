@@ -1,0 +1,132 @@
+{% extends "courses/base.html" %}
+{% load course_custom_tags %}
+
+{% block title %}
+    Signup
+{% endblock title %}
+
+{% block css %}
+<style>
+    /* Container Styles */
+    .container {
+        padding-top: 30px;
+    }
+
+    /* Card Styles */
+    .card {
+        margin-bottom: 20px;
+        width: 18rem;
+        border: none; /* Remove default card border */
+        border-radius: 10px; /* Add border radius for smoother edges */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add box shadow for depth */
+    }
+
+    .card-img-top {
+        width: 100%;
+        height: auto;
+        border-top-left-radius: 10px; /* Add border radius for image corners */
+        border-top-right-radius: 10px; /* Add border radius for image corners */
+    }
+
+    .card-body {
+        padding: 20px; /* Add padding inside the card body */
+    }
+
+    .card-title {
+        font-size: 20px;
+        font-weight: bold;
+        color: #333; /* Set card title color to dark gray */
+        margin-bottom: 15px; /* Add bottom margin to separate title from content */
+    }
+
+    /* Button Styles */
+    .btn {
+        background-color: #007bff; /* Blue button color */
+        color: #fff; /* White text color */
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        width: 100%; /* Make button width 100% of parent container */
+    }
+
+    .btn:hover {
+        background-color: #0056b3; /* Darker blue on hover */
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+        .card {
+            width: 100%; /* Set card width to 100% on smaller screens */
+        }
+    }
+</style>
+{% endblock css %}
+
+{% block content %}
+<div class="container">
+    <br>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mx-auto">
+                <img class="card-img-top" src="{{ course.thumbnail.url }}" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">{{ course.name }}</h5>
+                    <p class="card-text">
+                        Save {{ course.discount }}%
+                        <br>
+                        <span class="price">
+                            <del>{{ course.price | rupee }}</del>
+                            &nbsp;
+                            <span>{% cal_sellprice course.price course.discount as value %}{{ value | rupee }}</span>
+                        </span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div>
+                <p class="display-5">{{ course.name }}</p>
+                <hr>
+                <p class="display-5">Payable Amount: <b>{% cal_sellprice course.price course.discount as value %}{{ value | rupee }}</b></p>
+                <a class="btn btn-light border" href="?action=create_payment">Continue to Payment</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if order is not None %}
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    var options = {
+        "key": "rzp_test_LQojZwb07SIepi", // Enter the Key ID generated from the Dashboard
+        "name": "{{ course.name }}",
+        "description": "Payment For {{ course.name }}",
+        "image": "https://png.pngtree.com/element_pic/00/16/07/115783931601b5c.jpg",
+        "order_id": "{{ order.id }}", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+        "callback_url": "http://localhost:8000/verify_payment",
+        "prefill": {
+            "name": "{{ user.first_name }}",
+            "email": "{{ user.email }}",
+        },
+        "theme": {
+            "color": "#3399cc"
+        }
+    };
+    var rzp1 = new Razorpay(options);
+    rzp1.open();
+</script>
+{% endif %}
+
+{% if error is not None %}
+<script>
+    window.onload = () => {
+        alert("{{ error }}");
+    };
+</script>
+{% endif %}
+{% endblock content %}

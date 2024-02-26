@@ -1,0 +1,112 @@
+{% extends "courses/base.html" %}
+{% load course_custom_tags %}
+
+{% block title %}
+    Signup
+{% endblock title %}
+
+{% block css %}
+<style>
+    /* Custom CSS for My Courses page */
+    
+    /* Container Styles */
+    .container {
+        padding-top: 30px;
+    }
+    
+    /* Title Styles */
+    .display-6 {
+        font-size: 24px;
+        font-weight: bold;
+        color: #333; /* Set title color to dark gray */
+    }
+
+    /* Card Styles */
+    .card {
+        margin-bottom: 20px;
+        width: 18rem;
+        border: none; /* Remove default card border */
+        border-radius: 10px; /* Add border radius for smoother edges */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add box shadow for depth */
+    }
+
+    .card-img-top {
+        width: 100%;
+        height: auto;
+        border-top-left-radius: 10px; /* Add border radius for image corners */
+        border-top-right-radius: 10px; /* Add border radius for image corners */
+    }
+
+    .card-body {
+        padding: 20px; /* Add padding inside the card body */
+    }
+
+    .card-title {
+        font-size: 20px;
+        font-weight: bold;
+        color: #333; /* Set card title color to dark gray */
+        margin-bottom: 15px; /* Add bottom margin to separate title from content */
+    }
+
+    /* Button Styles */
+    .btn {
+        background-color: #007bff; /* Blue button color */
+        color: #fff; /* White text color */
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        width: 100%; /* Make button width 100% of parent container */
+    }
+
+    .btn:hover {
+        background-color: #0056b3; /* Darker blue on hover */
+    }
+
+    /* Footer Styles */
+    .card-footer {
+        padding: 0; /* Remove default padding for cleaner look */
+    }
+
+    .border-right {
+        border-right: 1px solid #ccc; /* Add right border for separation */
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+        .card {
+            width: 100%; /* Set card width to 100% on smaller screens */
+        }
+    }
+</style>
+{% endblock css %}
+
+{% block content %}
+<div class="container">
+    <p class="display-6">My Courses</p>
+    <hr>
+    <div class="row">
+        {% for uc in user_courses %}
+        <div class="col-md-4">
+            <div class="card">
+                <img src="{{ uc.course.thumbnail.url }}" class="card-img-top" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">{{ uc.course.name }}</h5>
+                </div>
+                <div class="card-footer">
+                    <div class="row no-gutters">
+                        <div class="col border-right">
+                            <a href="/course/{{ uc.course.slug }}" class="btn btn-light btn-block">Start Course</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}

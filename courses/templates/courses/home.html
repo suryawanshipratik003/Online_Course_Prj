@@ -1,0 +1,118 @@
+{% extends "courses/base.html" %}
+{% load course_custom_tags %}
+
+{% block title %}
+    Courses
+{% endblock title %}
+
+{% block content %}
+<style>
+    /* General Styles */
+    body {
+        background-color: #f8f9fa; /* Set background color to a light gray */
+        color: #333; /* Set text color to dark gray for better readability */
+    }
+
+    .container {
+        padding-top: 20px; /* Add top padding for container */
+    }
+
+    /* Card Styles */
+    .card {
+        margin-bottom: 20px; /* Add bottom margin to separate cards */
+        border: none; /* Remove default card border */
+        border-radius: 10px; /* Add border radius for smoother edges */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add box shadow for depth */
+    }
+
+    .card-title {
+        font-size: 1.25rem; /* Set card title font size */
+        font-weight: bold; /* Make card title bold for emphasis */
+        color: #333; /* Set card title color to dark gray */
+        margin-bottom: 0.75rem; /* Add bottom margin to separate title from content */
+    }
+
+    .card-text {
+        font-size: 1rem; /* Set card text font size */
+        color: #555; /* Set card text color to gray */
+        margin-bottom: 0.5rem; /* Add bottom margin to separate text from buttons */
+    }
+
+    .card-footer {
+        padding: 10px 20px; /* Add padding to card footer for spacing */
+        background-color: #fff; /* Set card footer background color to white */
+        border-top: 1px solid #dee2e6; /* Add top border to separate footer from body */
+        border-bottom-left-radius: 10px; /* Add border radius to bottom left corner */
+        border-bottom-right-radius: 10px; /* Add border radius to bottom right corner */
+    }
+
+    /* Button Styles */
+    .btn {
+        background-color: #007bff; /* Set button background color to blue */
+        color: #fff; /* Set button text color to white */
+        border: none;
+        border-radius: 5px; /* Add border radius for rounded corners */
+        padding: 10px 20px; /* Add padding to buttons for better clickability */
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn:hover {
+        background-color: #0056b3; /* Darken button color on hover */
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 576px) {
+        .card {
+            width: 100%; /* Set card width to 100% on small screens */
+        }
+    }
+</style>
+
+<div class="container">
+    <div class="row">
+        {% for course in object_list %}
+        <div class="col-md-4">
+            <div class="card">
+                <img src="{{ course.thumbnail.url }}" class="card-img-top" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">{{ course.name }}</h5>
+                    <small>{{ course.thumbnail.url }}</small>
+                    <p class="card-text">
+                        Save {{ course.discount }}%
+                        <br>
+                        <span class="price">
+                            <del>{{ course.price | rupee }}</del>
+                            &nbsp;
+                            <h1></h1>
+                            <span>{% cal_sellprice course.price course.discount as value %}{{ value | rupee }}</span>
+                        </span>
+                    </p>
+                </div>
+                <div class="card-footer">
+                    {% is_enrolled request course as enrolled %}
+                    <div class="row no-gutters">
+                        {% if enrolled %}
+                        <div class="col border-right">
+                            <a href="/course/{{ course.slug }}" class="btn btn-light btn-block">Start Course</a>
+                        </div>
+                        {% else %}
+                        <div class="col border-right">
+                            <a href="/check-out/{{ course.slug }}" class="btn btn-light btn-block">Enroll Now</a>
+                        </div>
+                        <div class="col border-left">
+                            <a href="/course/{{ course.slug }}" class="btn btn-light btn-block">Show More</a>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock content %}

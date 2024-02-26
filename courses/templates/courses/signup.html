@@ -1,0 +1,74 @@
+{% extends "courses/base.html" %}
+{% load course_custom_tags %}
+{% block title %}
+    Signup
+{% endblock title %}
+
+{% block content %}
+<style>
+    /* Container styles */
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    /* Heading styles */
+    .display-1 {
+        font-size: 36px;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    /* Form styles */
+    form {
+        max-width: 400px;
+        margin: 0 auto;
+        background-color: #f9f9f9;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Form input styles */
+    form input[type="text"],
+    form input[type="email"],
+    form input[type="password"] {
+        width: calc(100% - 20px);
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    /* Submit button styles */
+    form input[type="submit"] {
+        width: 100%;
+        padding: 10px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    form input[type="submit"]:hover {
+        background-color: #0056b3;
+    }
+</style>
+
+<div class="container">
+    <h1 class="display-1">Signup Page</h1>
+ 
+    <div>
+       <form action="/signup" method="POST">
+          {% csrf_token %}
+          {{form.as_p}}
+ 
+          <input type="submit" value="Register">
+       </form>
+    </div>
+ </div>
+
+{% endblock content %}

@@ -1,0 +1,40 @@
+.price {
+    font-size: 20px;
+}
+
+.display-5{
+    font-size: 35px;
+}
+
+.display-6{
+    font-size: 30px;
+    font-weight: 300;
+}
+
+.overflow-y-scroll{
+    overflow-y: scroll;
+}
+
+.active-video{
+    background-color: rgb(78, 79, 80);
+    color: antiquewhite;
+}
+.no-preview{
+    cursor: not-allowed;
+}   
+a:hover{
+    text-decoration: none;
+}
+
+a{
+    color: rgb(61, 59, 59);
+}
+
+.active-video-link{
+    color: rgb(206, 202, 196);
+}
+
+.active-video-link:hover{
+    text-decoration: none;
+    color: rgb(255, 255, 255);
+}
